@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>X</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">X</div>
+        <div class="brand-text">
+          <h1>X</h1>
+          <div class="status-row">
+            <span id="presenceDot" class="presence-dot online"></span>
+            <p id="statusLine" class="subtitle">En ligne</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="menuBtn" class="btn secondary" type="button">Menu</button>
+        <button id="themeBtn" class="btn secondary" type="button">Mode clair</button>
+        <button id="clearBtn" class="btn secondary" type="button">Effacer</button>
+      </div>
+    </header>
+
+    <div class="topbar">
+      <span id="timeDisplay">--:--</span>
+      <span id="dateDisplay">--</span>
+      <span id="weatherDisplay">Météo : --</span>
+      <span id="netDisplay">Internet : --</span>
+    </div>
+
+    <aside id="sidePanel" class="side-panel">
+      <div class="side-panel-top">
+        <div class="side-panel-header">
+          <h2>Paramètres</h2>
+          <button id="closePanelBtn" class="btn secondary panel-toggle" type="button">◀</button>
+        </div>
+      </div>
+
+      <div class="side-panel-content">
+        <button id="shareBtn" class="btn secondary" type="button">Partager l’app</button>
+        <button id="copyLinkBtn" class="btn secondary" type="button">Copier le lien</button>
+        <button id="exportBtn" class="btn secondary" type="button">Exporter</button>
+        <button id="adminBtn" class="btn secondary" type="button">Menu admin</button>
+      </div>
+    </aside>
+
+    <main id="chat" class="chat" aria-live="polite"></main>
+
+    <form id="form" class="input-area">
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Écris ton message..."
+        autocomplete="off"
+        maxlength="500"
+      />
+      <button type="submit" class="btn">Envoyer</button>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
