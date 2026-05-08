@@ -7,11 +7,15 @@ window.addEventListener("DOMContentLoaded", function () {
   const statusLine = document.getElementById("statusLine");
   const presenceDot = document.getElementById("presenceDot");
   const netDisplay = document.getElementById("netDisplay");
+  const scrollBottomBtn = document.getElementById("scrollBottomBtn");
+  const attachBtn = document.getElementById("attachBtn");
+  const mediaInput = document.getElementById("mediaInput");
   const menuBtn = document.getElementById("menuBtn");
   const sidePanel = document.getElementById("sidePanel");
   const closePanelBtn = document.getElementById("closePanelBtn");
   const shareBtn = document.getElementById("shareBtn");
   const copyLinkBtn = document.getElementById("copyLinkBtn");
+  const copyAllBtn = document.getElementById("copyAllBtn");
   const exportBtn = document.getElementById("exportBtn");
   const adminBtn = document.getElementById("adminBtn");
   const timeDisplay = document.getElementById("timeDisplay");
@@ -27,11 +31,15 @@ window.addEventListener("DOMContentLoaded", function () {
     !statusLine ||
     !presenceDot ||
     !netDisplay ||
+    !scrollBottomBtn ||
+    !attachBtn ||
+    !mediaInput ||
     !menuBtn ||
     !sidePanel ||
     !closePanelBtn ||
     !shareBtn ||
     !copyLinkBtn ||
+    !copyAllBtn ||
     !exportBtn ||
     !adminBtn ||
     !timeDisplay ||
@@ -92,6 +100,40 @@ window.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  chat.addEventListener("scroll", function () {
+    const nearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 120;
+    scrollBottomBtn.style.display = nearBottom ? "none" : "flex";
+  });
+
+  scrollBottomBtn.addEventListener("click", function () {
+    chat.scrollTop = chat.scrollHeight;
+  });
+
+  attachBtn.addEventListener("click", function () {
+    mediaInput.click();
+  });
+
+  mediaInput.addEventListener("change", function () {
+    const file = mediaInput.files && mediaInput.files[0];
+    if (!file) return;
+
+    const fileURL = URL.createObjectURL(file);
+    const type = file.type || "";
+    const name = file.name || "fichier";
+
+    if (type.startsWith("image/")) {
+      addMediaMessage("image", fileURL, name);
+    } else if (type.startsWith("audio/")) {
+      addMediaMessage("audio", fileURL, name);
+    } else if (type.startsWith("video/")) {
+      addMediaMessage("video", fileURL, name);
+    } else {
+      addFileMessage(name, fileURL);
+    }
+
+    mediaInput.value = "";
+  });
+
   clearBtn.addEventListener("click", function () {
     if (!confirm("Effacer toute la conversation ?")) return;
     messages = [];
@@ -142,6 +184,18 @@ window.addEventListener("DOMContentLoaded", function () {
       alert("Lien copié !");
     } catch {
       alert("Impossible de copier le lien.");
+    }
+  });
+
+  copyAllBtn.addEventListener("click", async function () {
+    try {
+      const allText = messages.map(function (m) {
+        return (m.role === "user" ? "Moi" : "X") + " : " + m.text;
+      }).join("\n");
+      await navigator.clipboard.writeText(allText);
+      alert("Tout le chat a été copié !");
+    } catch {
+      alert("Impossible de copier le chat.");
     }
   });
 
@@ -455,10 +509,85 @@ window.addEventListener("DOMContentLoaded", function () {
     appendMessage(text, role);
   }
 
+  function addMediaMessage(kind, fileURL, name) {
+    const div = document.createElement("div");
+    div.className = "message user";
+
+    const title = document.createElement("div");
+    title.textContent = name;
+    div.appendChild(title);
+
+    const preview = document.createElement("div");
+    preview.className = "media-preview";
+
+    if (kind === "image") {
+      const img = document.createElement("img");
+      img.src = fileURL;
+      img.alt = name;
+      preview.appendChild(img);
+    } else if (kind === "audio") {
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = fileURL;
+      preview.appendChild(audio);
+    } else if (kind === "video") {
+      const video = document.createElement("video");
+      video.controls = true;
+      video.src = fileURL;
+      preview.appendChild(video);
+    }
+
+    div.appendChild(preview);
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function addFileMessage(name, fileURL) {
+    const div = document.createElement("div");
+    div.className = "message user";
+
+    const label = document.createElement("div");
+    label.textContent = "Fichier : " + name;
+    div.appendChild(label);
+
+    const chip = document.createElement("a");
+    chip.className = "file-chip";
+    chip.href = fileURL;
+    chip.target = "_blank";
+    chip.rel = "noopener";
+    chip.textContent = "Ouvrir le fichier";
+    div.appendChild(chip);
+
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
   function appendMessage(text, role) {
     const div = document.createElement("div");
     div.className = "message " + role;
     div.textContent = text;
+
+    if ((role === "bot" || role === "user") && text.length > 120) {
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "message-copy-btn";
+      copyBtn.type = "button";
+      copyBtn.textContent = "□";
+      copyBtn.title = "Copier ce message";
+      copyBtn.addEventListener("click", async function (e) {
+        e.stopPropagation();
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = "✓";
+          setTimeout(function () {
+            copyBtn.textContent = "□";
+          }, 800);
+        } catch {
+          alert("Impossible de copier ce message.");
+        }
+      });
+      div.appendChild(copyBtn);
+    }
+
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
   }

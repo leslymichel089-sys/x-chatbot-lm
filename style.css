@@ -164,6 +164,7 @@ body {
   white-space: pre-wrap;
   border: 1px solid transparent;
   font-size: 16px;
+  position: relative;
 }
 
 .message.user {
@@ -186,12 +187,60 @@ body {
   border: none;
 }
 
-.input-area {
+.message-copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message.bot .message-copy-btn {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.message-copy-btn:hover {
+  opacity: 0.9;
+}
+
+.composer-wrap {
   display: flex;
   gap: 10px;
   padding: 14px;
   border-top: 1px solid var(--border);
   background: var(--panel);
+  align-items: center;
+}
+
+.attach-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: var(--secondary);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.attach-btn:hover {
+  background: var(--secondary-hover);
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  flex: 1;
 }
 
 .input-area input {
@@ -291,6 +340,55 @@ body {
   text-align: center;
 }
 
+.scroll-bottom-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 92px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: var(--btn);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 40;
+}
+
+.scroll-bottom-btn:hover {
+  background: var(--btn-hover);
+}
+
+.media-preview {
+  margin-top: 8px;
+  max-width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.media-preview img,
+.media-preview video {
+  max-width: 100%;
+  display: block;
+}
+
+.media-preview audio {
+  width: 100%;
+  display: block;
+}
+
+.file-chip {
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
 @media (max-width: 600px) {
   .app {
     border: none;
@@ -316,5 +414,14 @@ body {
 
   .side-panel {
     width: 100%;
+  }
+
+  .scroll-bottom-btn {
+    right: 14px;
+    bottom: 96px;
+  }
+
+  .composer-wrap {
+    padding: 12px;
   }
 }

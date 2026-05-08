@@ -49,6 +49,7 @@
       <div class="side-panel-content">
         <button id="shareBtn" class="btn secondary" type="button">Partager l’app</button>
         <button id="copyLinkBtn" class="btn secondary" type="button">Copier le lien</button>
+        <button id="copyAllBtn" class="btn secondary" type="button">Copier tout le chat</button>
         <button id="exportBtn" class="btn secondary" type="button">Exporter</button>
         <button id="adminBtn" class="btn secondary" type="button">Menu admin</button>
       </div>
@@ -56,16 +57,24 @@
 
     <main id="chat" class="chat" aria-live="polite"></main>
 
-    <form id="form" class="input-area">
-      <input
-        id="messageInput"
-        type="text"
-        placeholder="Écris ton message..."
-        autocomplete="off"
-        maxlength="500"
-      />
-      <button type="submit" class="btn">Envoyer</button>
-    </form>
+    <button id="scrollBottomBtn" class="scroll-bottom-btn" type="button" aria-label="Aller en bas">↓</button>
+
+    <div class="composer-wrap">
+      <button id="attachBtn" class="attach-btn" type="button" aria-label="Joindre un fichier">📎</button>
+
+      <form id="form" class="input-area">
+        <input
+          id="messageInput"
+          type="text"
+          placeholder="Écris ton message..."
+          autocomplete="off"
+          maxlength="500"
+        />
+        <button type="submit" class="btn">Envoyer</button>
+      </form>
+    </div>
+
+    <input id="mediaInput" type="file" hidden />
   </div>
 
   <script src="app.js"></script>
